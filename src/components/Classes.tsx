@@ -80,7 +80,14 @@ const Classes = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGrade, setSelectedGrade] = useState<string>('');
 
-  // Removed all auto-loading useEffect - data only loads when button is clicked
+  // Auto-load when navigating with URL context
+  useEffect(() => {
+    if (selectedInstitute?.id && !hasAttemptedLoad && !loading) {
+      console.log('🚀 Auto-loading classes from URL context:', selectedInstitute.id);
+      setHasAttemptedLoad(true);
+      fetchClasses(false);
+    }
+  }, [selectedInstitute?.id]);
 
   const userRole = useInstituteRole();
   const isInstituteAdmin = userRole === 'InstituteAdmin';

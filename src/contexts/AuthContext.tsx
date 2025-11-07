@@ -414,7 +414,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     restoreSession();
   }, []); // Run once on mount
 
-  // 🔄 SYNC CONTEXT FROM URL - Derive institute/class/subject from pathname on refresh
+  // 🔄 SYNC CONTEXT FROM URL - Always trust URL as source of truth
   useEffect(() => {
     if (!location?.pathname || location.pathname === '/login') return;
     
@@ -424,62 +424,56 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       console.log('🔗 URL context parsed:', ctx, 'from', location.pathname);
 
-      // Only set context from URL if it exists in URL and NOT already set
-      if (ctx.instituteId && !currentInstituteId) {
+      // ALWAYS sync from URL when URL has context (URL is source of truth)
+      if (ctx.instituteId && currentInstituteId !== ctx.instituteId) {
         console.log('📍 Setting institute from URL:', ctx.instituteId);
         setCurrentInstituteId(ctx.instituteId);
-        if (!selectedInstitute || selectedInstitute.id !== ctx.instituteId) {
-          setSelectedInstituteState({
-            id: ctx.instituteId,
-            name: 'Institute ' + ctx.instituteId,
-            code: ctx.instituteId,
-            description: '',
-            isActive: true
-          } as Institute);
-        }
+        setSelectedInstituteState({
+          id: ctx.instituteId,
+          name: 'Institute ' + ctx.instituteId,
+          code: ctx.instituteId,
+          description: '',
+          isActive: true
+        } as Institute);
       }
 
-      if (ctx.classId && !currentClassId) {
+      if (ctx.classId && currentClassId !== ctx.classId) {
         console.log('📍 Setting class from URL:', ctx.classId);
         setCurrentClassId(ctx.classId);
-        if (!selectedClass || selectedClass.id !== ctx.classId) {
-          setSelectedClassState({
-            id: ctx.classId,
-            name: 'Class ' + ctx.classId,
-            code: ctx.classId,
-            description: '',
-            grade: 0,
-            specialty: ''
-          } as Class);
-        }
+        setSelectedClassState({
+          id: ctx.classId,
+          name: 'Class ' + ctx.classId,
+          code: ctx.classId,
+          description: '',
+          grade: 0,
+          specialty: ''
+        } as Class);
       }
 
-      if (ctx.subjectId && !currentSubjectId) {
+      if (ctx.subjectId && currentSubjectId !== ctx.subjectId) {
         console.log('📍 Setting subject from URL:', ctx.subjectId);
         setCurrentSubjectId(ctx.subjectId);
-        if (!selectedSubject || selectedSubject.id !== ctx.subjectId) {
-          setSelectedSubjectState({
-            id: ctx.subjectId,
-            name: 'Subject ' + ctx.subjectId,
-            code: ctx.subjectId,
-            description: ''
-          } as Subject);
-        }
+        setSelectedSubjectState({
+          id: ctx.subjectId,
+          name: 'Subject ' + ctx.subjectId,
+          code: ctx.subjectId,
+          description: ''
+        } as Subject);
       }
 
-      if (ctx.childId && !currentChildId) {
+      if (ctx.childId && currentChildId !== ctx.childId) {
         console.log('📍 Setting child from URL:', ctx.childId);
         setCurrentChildId(ctx.childId);
       }
 
-      if (ctx.organizationId && !currentOrganizationId) {
+      if (ctx.organizationId && currentOrganizationId !== ctx.organizationId) {
         console.log('📍 Setting organization from URL:', ctx.organizationId);
         setCurrentOrganizationId(ctx.organizationId);
       }
     } catch (e) {
       console.warn('⚠️ URL context sync failed:', e);
     }
-  }, [location?.pathname, currentInstituteId, currentClassId, currentSubjectId, currentChildId, currentOrganizationId]);
+  }, [location?.pathname]);
 
   const value = {
     user,
