@@ -414,76 +414,72 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     restoreSession();
   }, []); // Run once on mount
 
-  // 🔄 SYNC CONTEXT FROM URL (derive IDs from path on refresh)
+  // 🔄 SYNC CONTEXT FROM URL - Derive institute/class/subject from pathname on refresh
   useEffect(() => {
+    if (!location?.pathname || location.pathname === '/login') return;
+    
     try {
       const { parseContextIds } = require('@/utils/pageNavigation');
       const ctx = parseContextIds(location.pathname);
 
-      if (ctx.instituteId && (!selectedInstitute || selectedInstitute.id !== ctx.instituteId)) {
-        setSelectedInstitute({
-          id: ctx.instituteId,
-          name: selectedInstitute?.name || 'Unknown Institute',
-          code: selectedInstitute?.code || '',
-          description: selectedInstitute?.description || '',
-          isActive: true,
-          type: selectedInstitute?.type
-        } as Institute);
+      console.log('🔗 URL context parsed:', ctx, 'from', location.pathname);
+
+      // Only set context from URL if it exists in URL and NOT already set
+      if (ctx.instituteId && !currentInstituteId) {
+        console.log('📍 Setting institute from URL:', ctx.instituteId);
+        setCurrentInstituteId(ctx.instituteId);
+        if (!selectedInstitute || selectedInstitute.id !== ctx.instituteId) {
+          setSelectedInstituteState({
+            id: ctx.instituteId,
+            name: 'Institute ' + ctx.instituteId,
+            code: ctx.instituteId,
+            description: '',
+            isActive: true
+          } as Institute);
+        }
       }
 
-      if (ctx.classId && (!selectedClass || selectedClass.id !== ctx.classId)) {
-        setSelectedClass({
-          id: ctx.classId,
-          name: selectedClass?.name || 'Unknown Class',
-          code: selectedClass?.code || '',
-          description: selectedClass?.description || '',
-          grade: selectedClass?.grade ?? 0,
-          specialty: selectedClass?.specialty || ''
-        } as Class);
+      if (ctx.classId && !currentClassId) {
+        console.log('📍 Setting class from URL:', ctx.classId);
+        setCurrentClassId(ctx.classId);
+        if (!selectedClass || selectedClass.id !== ctx.classId) {
+          setSelectedClassState({
+            id: ctx.classId,
+            name: 'Class ' + ctx.classId,
+            code: ctx.classId,
+            description: '',
+            grade: 0,
+            specialty: ''
+          } as Class);
+        }
       }
 
-      if (ctx.subjectId && (!selectedSubject || selectedSubject.id !== ctx.subjectId)) {
-        setSelectedSubject({
-          id: ctx.subjectId,
-          name: selectedSubject?.name || 'Unknown Subject',
-          code: selectedSubject?.code || '',
-          description: selectedSubject?.description || ''
-        } as Subject);
+      if (ctx.subjectId && !currentSubjectId) {
+        console.log('📍 Setting subject from URL:', ctx.subjectId);
+        setCurrentSubjectId(ctx.subjectId);
+        if (!selectedSubject || selectedSubject.id !== ctx.subjectId) {
+          setSelectedSubjectState({
+            id: ctx.subjectId,
+            name: 'Subject ' + ctx.subjectId,
+            code: ctx.subjectId,
+            description: ''
+          } as Subject);
+        }
       }
 
-      if (ctx.childId && (!selectedChild || selectedChild.id !== ctx.childId)) {
-        setSelectedChild({
-          id: ctx.childId,
-          userId: selectedChild?.userId || '',
-          studentId: selectedChild?.studentId || '',
-          emergencyContact: selectedChild?.emergencyContact || '',
-          medicalConditions: selectedChild?.medicalConditions || '',
-          allergies: selectedChild?.allergies || '',
-          bloodGroup: selectedChild?.bloodGroup || '',
-          user: selectedChild?.user || {
-            id: '', firstName: '', lastName: '', email: '', imageUrl: '', dateOfBirth: '', gender: '', userType: ''
-          }
-        } as Child);
+      if (ctx.childId && !currentChildId) {
+        console.log('📍 Setting child from URL:', ctx.childId);
+        setCurrentChildId(ctx.childId);
       }
 
-      if (ctx.organizationId && (!selectedOrganization || selectedOrganization.id !== ctx.organizationId)) {
-        setSelectedOrganization({
-          id: ctx.organizationId,
-          name: selectedOrganization?.name || 'Unknown Organization',
-          code: selectedOrganization?.code || '',
-          description: selectedOrganization?.description || '',
-          address: selectedOrganization?.address || '',
-          phone: selectedOrganization?.phone || '',
-          email: selectedOrganization?.email || '',
-          isActive: selectedOrganization?.isActive ?? true,
-          createdAt: selectedOrganization?.createdAt || new Date().toISOString(),
-          updatedAt: selectedOrganization?.updatedAt || new Date().toISOString(),
-        } as Organization);
+      if (ctx.organizationId && !currentOrganizationId) {
+        console.log('📍 Setting organization from URL:', ctx.organizationId);
+        setCurrentOrganizationId(ctx.organizationId);
       }
     } catch (e) {
-      console.warn('URL context sync failed', e);
+      console.warn('⚠️ URL context sync failed:', e);
     }
-  }, [location.pathname]);
+  }, [location?.pathname, currentInstituteId, currentClassId, currentSubjectId, currentChildId, currentOrganizationId]);
 
   const value = {
     user,

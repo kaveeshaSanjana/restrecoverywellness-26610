@@ -24,59 +24,10 @@ export const useContextUrlSync = (currentPage: string) => {
   } = useAuth();
 
   useEffect(() => {
-    // Parse current URL context
-    const urlContext = parseContextIds(location.pathname);
-    const urlBasePath = extractBasePath(location.pathname);
-    
-    // Build expected context based on selections
-    const expectedContext = {
-      instituteId: selectedInstitute?.id,
-      classId: selectedClass?.id,
-      subjectId: selectedSubject?.id,
-      childId: selectedChild?.id,
-      organizationId: selectedOrganization?.id,
-      transportId: selectedTransport?.id
-    };
-    
-    console.log('🔗 URL Sync Check:', {
-      currentPath: location.pathname,
-      urlContext,
-      expectedContext,
-      basePath: urlBasePath
-    });
-    
-    // CRITICAL: If URL already carries context IDs, do NOT rewrite it.
-    const urlHasContext = Boolean(
-      urlContext.instituteId ||
-      urlContext.classId ||
-      urlContext.subjectId ||
-      urlContext.childId ||
-      urlContext.organizationId ||
-      urlContext.transportId
-    );
-    if (urlHasContext) {
-      return; // trust the URL when deep-linked or refreshed on a deep route
-    }
-    
-    // Build expected URL with context (only when URL has no context)
-    const expectedUrl = buildSidebarUrl(currentPage, expectedContext);
-    
-    // Only update if URL doesn't match expected structure
-    if (location.pathname !== expectedUrl && !isSpecialRoute(location.pathname)) {
-      console.log('🔄 Updating URL:', { from: location.pathname, to: expectedUrl });
-      navigate(expectedUrl, { replace: true });
-    }
-  }, [
-    currentPage,
-    selectedInstitute?.id,
-    selectedClass?.id,
-    selectedSubject?.id,
-    selectedChild?.id,
-    selectedOrganization?.id,
-    selectedTransport?.id,
-    navigate,
-    location.pathname
-  ]);
+    // DISABLED: URL is now the source of truth, we don't rewrite URLs automatically
+    // This prevents navigation errors and respects deep links
+    return;
+  }, []);
 };
 
 /**
