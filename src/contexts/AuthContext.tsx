@@ -1,5 +1,6 @@
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { 
   User, 
   Institute, 
@@ -59,6 +60,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentChildId, setCurrentChildId] = useState<string | null>(null);
   const [currentOrganizationId, setCurrentOrganizationId] = useState<string | null>(null);
   const [currentTransportId, setCurrentTransportId] = useState<string | null>(null);
+
+  const location = useLocation();
 
   const fetchUserInstitutes = async (userId: string, forceRefresh = false): Promise<Institute[]> => {
     try {
@@ -400,6 +403,77 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     restoreSession();
   }, []); // Run once on mount
+
+  // 🔄 SYNC CONTEXT FROM URL (derive IDs from path on refresh)
+  useEffect(() => {
+    try {
+      const { parseContextIds } = require('@/utils/pageNavigation');
+      const ctx = parseContextIds(location.pathname);
+
+      if (ctx.instituteId && (!selectedInstitute || selectedInstitute.id !== ctx.instituteId)) {
+        setSelectedInstitute({
+          id: ctx.instituteId,
+          name: selectedInstitute?.name || 'Unknown Institute',
+          code: selectedInstitute?.code || '',
+          description: selectedInstitute?.description || '',
+          isActive: true,
+          type: selectedInstitute?.type
+        } as Institute);
+      }
+
+      if (ctx.classId && (!selectedClass || selectedClass.id !== ctx.classId)) {
+        setSelectedClass({
+          id: ctx.classId,
+          name: selectedClass?.name || 'Unknown Class',
+          code: selectedClass?.code || '',
+          description: selectedClass?.description || '',
+          grade: selectedClass?.grade ?? 0,
+          specialty: selectedClass?.specialty || ''
+        } as Class);
+      }
+
+      if (ctx.subjectId && (!selectedSubject || selectedSubject.id !== ctx.subjectId)) {
+        setSelectedSubject({
+          id: ctx.subjectId,
+          name: selectedSubject?.name || 'Unknown Subject',
+          code: selectedSubject?.code || '',
+          description: selectedSubject?.description || ''
+        } as Subject);
+      }
+
+      if (ctx.childId && (!selectedChild || selectedChild.id !== ctx.childId)) {
+        setSelectedChild({
+          id: ctx.childId,
+          userId: selectedChild?.userId || '',
+          studentId: selectedChild?.studentId || '',
+          emergencyContact: selectedChild?.emergencyContact || '',
+          medicalConditions: selectedChild?.medicalConditions || '',
+          allergies: selectedChild?.allergies || '',
+          bloodGroup: selectedChild?.bloodGroup || '',
+          user: selectedChild?.user || {
+            id: '', firstName: '', lastName: '', email: '', imageUrl: '', dateOfBirth: '', gender: '', userType: ''
+          }
+        } as Child);
+      }
+
+      if (ctx.organizationId && (!selectedOrganization || selectedOrganization.id !== ctx.organizationId)) {
+        setSelectedOrganization({
+          id: ctx.organizationId,
+          name: selectedOrganization?.name || 'Unknown Organization',
+          code: selectedOrganization?.code || '',
+          description: selectedOrganization?.description || '',
+          address: selectedOrganization?.address || '',
+          phone: selectedOrganization?.phone || '',
+          email: selectedOrganization?.email || '',
+          isActive: selectedOrganization?.isActive ?? true,
+          createdAt: selectedOrganization?.createdAt || new Date().toISOString(),
+          updatedAt: selectedOrganization?.updatedAt || new Date().toISOString(),
+        } as Organization);
+      }
+    } catch (e) {
+      console.warn('URL context sync failed', e);
+    }
+  }, [location.pathname]);
 
   const value = {
     user,
