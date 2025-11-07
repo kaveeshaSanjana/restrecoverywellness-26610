@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 
 const LoginPage: React.FC = () => {
-  const { login, user, isLoading } = useAuth();
+  const { login, user, isLoading, validateUserToken } = useAuth();
   const navigate = useNavigate();
   const hasRedirected = useRef(false);
 
@@ -25,6 +25,17 @@ const LoginPage: React.FC = () => {
       }
     }
   }, [user, isLoading, navigate]);
+
+  // If a token exists but user isn't loaded, proactively restore session
+  useEffect(() => {
+    const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+    if (token && !user && !isLoading) {
+      console.log('🔄 Token found on /login but user not loaded — validating token...');
+      validateUserToken().catch(() => {
+        console.warn('Token validation failed on /login');
+      });
+    }
+  }, [user, isLoading, validateUserToken]);
 
   if (isLoading && !user) {
     return (
