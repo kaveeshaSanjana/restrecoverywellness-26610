@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Login from '@/components/Login';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 const LoginPage: React.FC = () => {
   const { login, user, isLoading } = useAuth();
@@ -24,6 +25,17 @@ const LoginPage: React.FC = () => {
       }
     }
   }, [user, isLoading, navigate]);
+
+  if (isLoading && !user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Preparing login...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Login

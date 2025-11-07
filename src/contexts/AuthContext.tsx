@@ -344,14 +344,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const tokenData = getAuthToken();
         const legacyToken = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
 
-        // If legacy token exists but structured token doesn't, clear the legacy token
+        // If legacy token exists but structured token doesn't, bootstrap structured storage from JWT
         if (!tokenData && legacyToken) {
-          console.warn('⚠️ Found orphaned access_token without structured data - cleaning up');
-          localStorage.removeItem('access_token');
-          sessionStorage.removeItem('access_token');
-          setIsRestoringSession(false);
-          setIsLoading(false);
-          return;
+          try {
+            console.warn('⚠️ Found legacy access_token without structured token — bootstrapping...');
+            const payloadBase64 = legacyToken.split('.')[1];
+            const payloadStr = atob(payloadBase64 || '');
+            const payload = JSON.parse(payloadStr || '{}');
+            const derivedUserId = payload.userId || payload.user_id || payload.sub || '';
+            if (derivedUserId) {
+              // Persist as a 30-day token by default (safe, user can logout to clear)
+              storeAuthToken(legacyToken, derivedUserId, true);
+              console.log('✅ Structured token bootstrapped from legacy token');
+            } else {
+              console.warn('⚠️ Could not derive user id from legacy token; proceeding with backend validation');
+            }
+          } catch (e) {
+            console.warn('⚠️ Failed to parse legacy token, will validate with backend directly', e);
+          }
         }
 
         if (!tokenData) {
