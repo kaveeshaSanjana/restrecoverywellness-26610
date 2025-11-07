@@ -86,6 +86,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
+    let attempts = 0;
+    const MAX_ATTEMPTS = 10; // 10 attempts = 3 seconds max wait
     
     const validateAccess = async () => {
       try {
@@ -94,6 +96,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           user: user?.email,
           role: user?.role,
           institute: selectedInstitute?.name,
+          isLoading,
           requireInstitute,
           requireClass,
           requireSubject,
@@ -111,13 +114,34 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
         console.log('🌐 Route context from URL:', ctx);
 
-        // Check 1: User authentication
+        // Check 1: Wait for auth loading to complete
+        if (isLoading) {
+          console.log('⏳ Auth still loading, waiting...');
+          return;
+        }
+
+        // Check 2: User authentication
         if (!user) {
+          const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+          
+          if (token && attempts < MAX_ATTEMPTS) {
+            attempts++;
+            console.log(`⏳ Token present but user not loaded yet (attempt ${attempts}/${MAX_ATTEMPTS})`);
+            // Retry validation after a short delay
+            timeoutId = setTimeout(() => {
+              validateAccess();
+            }, 300);
+            return;
+          }
+          
           console.warn('❌ Access denied: User not authenticated');
           setValidationError('User not authenticated');
           setIsValidating(false);
           return;
         }
+
+        // Reset attempts once user is loaded
+        attempts = 0;
 
         // Check 2: Token validation (check if token exists)
         const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
@@ -210,15 +234,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       }
     };
 
-    // Set timeout to prevent infinite validation
-    timeoutId = setTimeout(() => {
-      if (isValidating) {
-        console.warn('⏱️ Validation timeout - clearing invalid session');
-        setValidationError('Session validation timeout');
-        setIsValidating(false);
-      }
-    }, 3000); // 3 second timeout
-
     validateAccess();
     
     return () => {
@@ -226,6 +241,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     };
   }, [
     user, 
+    isLoading,
     selectedInstitute, 
     selectedClass, 
     selectedSubject,
@@ -240,8 +256,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     requireChild,
     requireOrganization,
     requireTransport,
-    customValidation,
-    isValidating
+    customValidation
   ]);
 
   // Show loading state while validating
