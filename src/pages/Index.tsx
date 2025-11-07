@@ -1,28 +1,16 @@
-
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import StorySection from "@/components/StorySection";
-import NewArrivalsSection from "@/components/NewArrivalsSection";
-import DirectionSection from "@/components/DirectionSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
+import React from 'react';
+import AppContent from '@/components/AppContent';
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main>
-        <HeroSection />
-        <DirectionSection />
-        <StorySection />
-        <NewArrivalsSection />
-        <TestimonialsSection />
-        <ContactSection />
-      </main>
-      <Footer />
-    </div>
-  );
+  console.log('Index component rendering');
+  
+  // Add error boundary to catch any rendering errors
+  try {
+    return <AppContent />;
+  } catch (error) {
+    console.error('Error in Index component:', error);
+    return <div>Error loading application. Please check console for details.</div>;
+  }
 };
 
 export default Index;
