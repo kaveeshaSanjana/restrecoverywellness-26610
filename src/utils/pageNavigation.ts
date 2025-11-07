@@ -45,7 +45,20 @@ export const useContextUrlSync = (currentPage: string) => {
       basePath: urlBasePath
     });
     
-    // Build expected URL with context
+    // CRITICAL: If URL already carries context IDs, do NOT rewrite it.
+    const urlHasContext = Boolean(
+      urlContext.instituteId ||
+      urlContext.classId ||
+      urlContext.subjectId ||
+      urlContext.childId ||
+      urlContext.organizationId ||
+      urlContext.transportId
+    );
+    if (urlHasContext) {
+      return; // trust the URL when deep-linked or refreshed on a deep route
+    }
+    
+    // Build expected URL with context (only when URL has no context)
     const expectedUrl = buildSidebarUrl(currentPage, expectedContext);
     
     // Only update if URL doesn't match expected structure
