@@ -339,6 +339,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         // Check if valid token exists
         const tokenData = getAuthToken();
+        const legacyToken = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+
+        // If legacy token exists but structured token doesn't, clear the legacy token
+        if (!tokenData && legacyToken) {
+          console.warn('⚠️ Found orphaned access_token without structured data - cleaning up');
+          localStorage.removeItem('access_token');
+          sessionStorage.removeItem('access_token');
+          setIsRestoringSession(false);
+          setIsLoading(false);
+          return;
+        }
 
         if (!tokenData) {
           console.log('⚠️ No valid token found, session restoration skipped');

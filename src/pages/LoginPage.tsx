@@ -1,38 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Login from '@/components/Login';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
-  const { login, user } = useAuth();
+  const { login, user, isLoading } = useAuth();
+  const navigate = useNavigate();
+  const hasRedirected = useRef(false);
 
   // If already authenticated, redirect away from /login
   useEffect(() => {
-    if (user) {
+    if (user && !isLoading && !hasRedirected.current) {
+      hasRedirected.current = true;
+      
       const redirectPath = sessionStorage.getItem('login_redirect');
       if (redirectPath && redirectPath !== '/login') {
+        console.log('🔄 Redirecting to saved path:', redirectPath);
         sessionStorage.removeItem('login_redirect');
-        window.history.pushState({}, '', redirectPath);
-        window.dispatchEvent(new PopStateEvent('popstate'));
+        navigate(redirectPath, { replace: true });
       } else {
-        window.history.pushState({}, '', '/dashboard');
-        window.dispatchEvent(new PopStateEvent('popstate'));
+        console.log('🔄 Redirecting to dashboard');
+        navigate('/dashboard', { replace: true });
       }
     }
-  }, [user]);
+  }, [user, isLoading, navigate]);
 
   return (
     <Login
       onLogin={() => {
-        const redirectPath = sessionStorage.getItem('login_redirect');
-        if (redirectPath && redirectPath !== '/login') {
-          sessionStorage.removeItem('login_redirect');
-          window.history.pushState({}, '', redirectPath);
-          window.dispatchEvent(new PopStateEvent('popstate'));
-        } else {
-          // Default to dashboard after login
-          window.history.pushState({}, '', '/dashboard');
-          window.dispatchEvent(new PopStateEvent('popstate'));
-        }
+        // Navigation handled by useEffect above
+        console.log('✅ Login successful, waiting for redirect...');
       }}
       loginFunction={login}
     />

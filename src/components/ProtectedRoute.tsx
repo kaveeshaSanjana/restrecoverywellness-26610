@@ -85,6 +85,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const [validationError, setValidationError] = useState<string | null>(null);
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
     const validateAccess = async () => {
       try {
         console.log('🔒 Validating route access:', {
@@ -109,16 +111,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
         console.log('🌐 Route context from URL:', ctx);
 
-        // Token presence (for race conditions)
-        const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
-
         // Check 1: User authentication
         if (!user) {
-          if (token) {
-            console.log('⏳ Token present but user not loaded yet — awaiting context restoration');
-            // Keep validating; do not fail yet
-            return;
-          }
           console.warn('❌ Access denied: User not authenticated');
           setValidationError('User not authenticated');
           setIsValidating(false);
@@ -126,6 +120,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         }
 
         // Check 2: Token validation (check if token exists)
+        const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
         if (!token) {
           console.warn('❌ Access denied: No authentication token found');
           setValidationError('Authentication token missing');
@@ -215,7 +210,20 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       }
     };
 
+    // Set timeout to prevent infinite validation
+    timeoutId = setTimeout(() => {
+      if (isValidating) {
+        console.warn('⏱️ Validation timeout - clearing invalid session');
+        setValidationError('Session validation timeout');
+        setIsValidating(false);
+      }
+    }, 3000); // 3 second timeout
+
     validateAccess();
+    
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [
     user, 
     selectedInstitute, 
@@ -232,7 +240,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     requireChild,
     requireOrganization,
     requireTransport,
-    customValidation
+    customValidation,
+    isValidating
   ]);
 
   // Show loading state while validating
