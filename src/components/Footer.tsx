@@ -73,20 +73,14 @@ const Footer = () => {
           <p className="text-primary-foreground/60 text-sm">
             © {new Date().getFullYear()} {siteName}. All rights reserved.
           </p>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
-            <p className="text-primary-foreground/60 text-sm flex items-center gap-1">
-              Made with <Heart size={14} className="text-secondary fill-secondary" /> for Sri Lanka
-            </p>
-            <span className="hidden md:inline text-primary-foreground/40">|</span>
-            <a 
-              href="https://www.simpleart.lk" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-primary-foreground/60 text-sm hover:text-secondary transition-colors"
-            >
-              Website by Simple Art
-            </a>
-          </div>
+          <a 
+            href="https://www.simpleart.lk" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-primary-foreground/60 text-sm hover:text-secondary transition-colors"
+          >
+            Website by Simple Art
+          </a>
         </div>
       </div>
     </footer>;
