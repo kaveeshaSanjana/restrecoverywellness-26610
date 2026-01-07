@@ -1,30 +1,12 @@
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(timer);
-          setTimeout(onComplete, 300);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 30);
-
-    return () => clearInterval(timer);
-  }, [onComplete]);
-
+const LoadingScreen = () => {
   return (
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-primary via-primary/95 to-primary-foreground"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
     >
       {/* Logo */}
       <motion.div
@@ -36,7 +18,7 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
         <img 
           src="/favicon.png" 
           alt="Ceylon Tour Rides" 
-          className="w-24 h-24 md:w-32 md:h-32 object-contain drop-shadow-2xl"
+          className="w-24 h-24 md:w-32 md:h-32 object-contain"
         />
       </motion.div>
 
@@ -45,7 +27,7 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
-        className="text-2xl md:text-3xl font-bold text-primary-foreground mb-2 tracking-wide"
+        className="text-2xl md:text-3xl font-bold text-foreground mb-2 tracking-wide"
       >
         Ceylon Tour Rides
       </motion.h1>
@@ -55,34 +37,23 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.5 }}
-        className="text-primary-foreground/70 text-sm md:text-base mb-8"
+        className="text-muted-foreground text-sm md:text-base mb-8"
       >
         Explore Sri Lanka Your Way
       </motion.p>
 
-      {/* Progress Bar */}
+      {/* Loading Spinner */}
       <motion.div
-        initial={{ width: 0, opacity: 0 }}
-        animate={{ width: "200px", opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.3 }}
-        className="h-1 bg-primary-foreground/20 rounded-full overflow-hidden"
-      >
-        <motion.div
-          className="h-full bg-secondary rounded-full"
-          style={{ width: `${progress}%` }}
-          transition={{ duration: 0.1 }}
-        />
-      </motion.div>
-
-      {/* Loading Text */}
-      <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="text-primary-foreground/50 text-xs mt-4"
+        transition={{ delay: 0.4 }}
+        className="flex flex-col items-center gap-4"
       >
-        Loading your adventure...
-      </motion.p>
+        <div className="w-10 h-10 border-3 border-primary/20 border-t-primary rounded-full animate-spin" />
+        <p className="text-muted-foreground/60 text-xs">
+          Loading your adventure...
+        </p>
+      </motion.div>
     </motion.div>
   );
 };

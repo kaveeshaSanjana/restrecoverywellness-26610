@@ -1,6 +1,7 @@
 import { useHeroContent } from '@/hooks/useGoogleSheets';
 import { ChevronDown, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
+import { useLoading } from '@/App';
 
 const Hero = () => {
   const { data: heroData, loading } = useHeroContent();
@@ -8,6 +9,8 @@ const Hero = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set([0]));
+  const [firstImageLoaded, setFirstImageLoaded] = useState(false);
+  const { setHeroLoaded } = useLoading();
 
   // Get arrays from hero sheet
   const fallbackImage = 'https://images.unsplash.com/photo-1586523969764-f4e2b6bc92e6?auto=format&fit=crop&w=1920&q=80';
@@ -21,6 +24,13 @@ const Hero = () => {
   const currentTitle = titles[currentSlide % titles.length] || titles[0];
   const currentSubtitle = subtitles[currentSlide % subtitles.length] || subtitles[0];
   const currentDescription = descriptions[currentSlide % descriptions.length] || descriptions[0];
+
+  // Signal loading complete when first image and data are ready
+  useEffect(() => {
+    if (firstImageLoaded && !loading) {
+      setHeroLoaded(true);
+    }
+  }, [firstImageLoaded, loading, setHeroLoaded]);
 
   // Preload next image
   useEffect(() => {
@@ -80,7 +90,16 @@ const Hero = () => {
       return <div key={index} className={`absolute inset-0 transition-opacity duration-700 ease-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`} style={{
         zIndex: index === currentSlide ? 1 : 0
       }}>
-            <img src={image} alt={`Sri Lanka destination ${index + 1}`} className="absolute inset-0 w-full h-full object-cover" loading={index === 0 ? "eager" : "lazy"} fetchPriority={index === 0 ? "high" : "auto"} />
+            <img 
+              src={image} 
+              alt={`Sri Lanka destination ${index + 1}`} 
+              className="absolute inset-0 w-full h-full object-cover" 
+              loading={index === 0 ? "eager" : "lazy"} 
+              fetchPriority={index === 0 ? "high" : "auto"}
+              onLoad={() => {
+                if (index === 0) setFirstImageLoaded(true);
+              }}
+            />
             {/* Simplified gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/30 to-background" />
           </div>;
