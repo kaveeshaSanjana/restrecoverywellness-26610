@@ -49,8 +49,8 @@ const SocialMedia = () => {
   ];
 
   return (
-    <section className="py-16 md:py-20 bg-muted/50">
-      <div className="container mx-auto px-4">
+    <section className="py-24 md:py-32 bg-muted/50">
+      <div className="container mx-auto px-4 max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,14 +58,14 @@ const SocialMedia = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
             We Are On
           </h2>
-          <p className="text-muted-foreground mb-10 text-lg">
-            Connect with us on social media
+          <p className="text-muted-foreground mb-14 text-xl max-w-2xl mx-auto">
+            Stay connected with us on social media for the latest travel updates, tips, and exclusive offers
           </p>
           
-          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {socials.map((social, index) => (
               <motion.a
                 key={social.name}
@@ -78,11 +78,11 @@ const SocialMedia = () => {
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className={`flex flex-col items-center gap-3 px-8 py-6 rounded-2xl ${social.bgColor} text-white shadow-lg transition-all duration-300 min-w-[140px]`}
+                className={`flex flex-col items-center gap-4 px-6 py-8 md:py-10 rounded-2xl ${social.bgColor} text-white shadow-lg transition-all duration-300`}
               >
                 <social.icon />
-                <span className="font-semibold text-base">{social.name}</span>
-                <span className="text-xs text-white/80">{social.label}</span>
+                <span className="font-semibold text-lg">{social.name}</span>
+                <span className="text-sm text-white/80">{social.label}</span>
               </motion.a>
             ))}
           </div>
