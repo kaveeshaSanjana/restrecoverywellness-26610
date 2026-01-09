@@ -9,14 +9,11 @@ import ContactForm from '@/components/ContactForm';
 import SocialMedia from '@/components/SocialMedia';
 import Footer from '@/components/Footer';
 import ScrollToContact from '@/components/ScrollToContact';
-
 const Index = () => {
   const refetchReviewsRef = useRef<(() => void) | null>(null);
-
   const handleRefetchRef = useCallback((refetch: () => void) => {
     refetchReviewsRef.current = refetch;
   }, []);
-
   const handleReviewSubmitted = useCallback(() => {
     if (refetchReviewsRef.current) {
       refetchReviewsRef.current();
@@ -27,9 +24,7 @@ const Index = () => {
   useEffect(() => {
     document.title = "Ceylon Tour Rides | Best Sri Lanka Tours, Private Driver & Safari 2025";
   }, []);
-
-  return (
-    <main className="min-h-screen">
+  return <main className="min-h-screen">
       {/* SEO-optimized hidden content for search engines */}
       <h1 className="sr-only">Ceylon Tour Rides - Sri Lanka's Premier Tour Operator for Private Tours, Safaris & Cultural Experiences</h1>
       
@@ -48,52 +43,78 @@ const Index = () => {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-sm font-medium text-primary">Trusted by 5000+ Travelers</span>
+              <span className="text-sm font-medium text-primary">Trusted by 500+ Travelers</span>
             </div>
             
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
               Discover <span className="text-primary">Sri Lanka</span> with
               <br />
-              <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">Ceylon Tour Rides</span>
+              <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-primary">Ceylon Tour Rides</span>
             </h2>
             
-            <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed">
-              Welcome to <strong className="text-foreground">Ceylon Tour Rides</strong>, your trusted partner for unforgettable <strong className="text-foreground">Sri Lanka tours</strong>. 
+            <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed">Welcome to Ceylon Tour Rides, your trusted partner for unforgettable Sri Lanka tours. We specialize in private guided tours, wildlife safaris at Yala National Park,cultural heritage visits to Sigiriya and Kandy.<strong className="text-foreground">Ceylon Tour Rides</strong>, your trusted partner for unforgettable <strong className="text-foreground">Sri Lanka tours</strong>. 
               We specialize in <strong className="text-foreground">private guided tours</strong>, <strong className="text-foreground">wildlife safaris at Yala National Park</strong>, 
-              <strong className="text-foreground">cultural heritage visits to Sigiriya and Kandy</strong>, and scenic journeys through <strong className="text-foreground">Ella's tea plantations</strong>.
+              <strong className="text-foreground"></strong>, and scenic journeys through <strong className="text-foreground">Ella's tea plantations</strong>.
             </p>
             
             {/* Destinations Marquee */}
             <div className="mb-16">
               <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-6">Popular Destinations We Cover</h3>
               <div className="flex flex-wrap justify-center gap-3">
-                {[
-                  { name: 'Negombo', icon: '🏖️' },
-                  { name: 'Dambulla', icon: '🏛️' },
-                  { name: 'Sigiriya', icon: '🏔️' },
-                  { name: 'Trincomalee', icon: '🌊' },
-                  { name: 'Nilaveli', icon: '🏝️' },
-                  { name: 'Kandy', icon: '🛕' },
-                  { name: 'Nuwara Eliya', icon: '🍃' },
-                  { name: 'Dambro Tea Factory', icon: '🍵' },
-                  { name: 'Ella', icon: '🚂' },
-                  { name: 'Arugam Bay', icon: '🏄' },
-                  { name: 'Yala National Park', icon: '🦁' },
-                  { name: 'Hiriketiya Beach', icon: '🌴' },
-                  { name: 'Mirissa Beach', icon: '🐋' },
-                  { name: 'Unawatuna Beach', icon: '☀️' },
-                  { name: 'Galle Fort', icon: '🏰' },
-                  { name: 'Colombo', icon: '🌆' },
-                ].map((destination, index) => (
-                  <span 
-                    key={destination.name}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 border border-border/50 text-sm font-medium text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all cursor-default"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
+                {[{
+                name: 'Negombo',
+                icon: '🏖️'
+              }, {
+                name: 'Dambulla',
+                icon: '🏛️'
+              }, {
+                name: 'Sigiriya',
+                icon: '🏔️'
+              }, {
+                name: 'Trincomalee',
+                icon: '🌊'
+              }, {
+                name: 'Nilaveli',
+                icon: '🏝️'
+              }, {
+                name: 'Kandy',
+                icon: '🛕'
+              }, {
+                name: 'Nuwara Eliya',
+                icon: '🍃'
+              }, {
+                name: 'Dambro Tea Factory',
+                icon: '🍵'
+              }, {
+                name: 'Ella',
+                icon: '🚂'
+              }, {
+                name: 'Arugam Bay',
+                icon: '🏄'
+              }, {
+                name: 'Yala National Park',
+                icon: '🦁'
+              }, {
+                name: 'Hiriketiya Beach',
+                icon: '🌴'
+              }, {
+                name: 'Mirissa Beach',
+                icon: '🐋'
+              }, {
+                name: 'Unawatuna Beach',
+                icon: '☀️'
+              }, {
+                name: 'Galle Fort',
+                icon: '🏰'
+              }, {
+                name: 'Colombo',
+                icon: '🌆'
+              }].map((destination, index) => <span key={destination.name} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 border border-border/50 text-sm font-medium text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all cursor-default" style={{
+                animationDelay: `${index * 50}ms`
+              }}>
                     <span>{destination.icon}</span>
                     <span>{destination.name}</span>
-                  </span>
-                ))}
+                  </span>)}
               </div>
             </div>
             
@@ -150,7 +171,7 @@ const Index = () => {
                   <div className="text-sm text-muted-foreground">Years Experience</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">5000+</div>
+                  <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">500+</div>
                   <div className="text-sm text-muted-foreground">Happy Travelers</div>
                 </div>
                 <div className="text-center">
@@ -175,8 +196,6 @@ const Index = () => {
       <SocialMedia />
       <Footer />
       <ScrollToContact />
-    </main>
-  );
+    </main>;
 };
-
 export default Index;
