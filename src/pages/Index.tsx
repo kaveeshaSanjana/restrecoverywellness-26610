@@ -52,7 +52,7 @@ const Index = () => {
               <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-primary">Ceylon Tour Rides</span>
             </h2>
             
-            <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed">Welcome to Ceylon Tour Rides, your trusted partner for unforgettable Sri Lanka tours. We specialize in private guided tours, wildlife safaris at Yala National Park,cultural heritage visits to Sigiriya and Kandy.<strong className="text-foreground">Ceylon Tour Rides</strong>, your trusted partner for unforgettable <strong className="text-foreground">Sri Lanka tours</strong>. 
+            <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed">Welcome to Ceylon Tour Rides, your trusted partner for unforgettable Sri Lanka tours. We specialize in private guided tours, wildlife safaris at Yala National Park,cultural heritage visits to Sigiriya and Kandy.Ceylon Tour Rides, your trusted partner for unforgettable Sri Lanka tours. We specialize in private guided tours, wildlife safaris at Yala National Park.<strong className="text-foreground">Ceylon Tour Rides</strong>, your trusted partner for unforgettable <strong className="text-foreground">Sri Lanka tours</strong>. 
               We specialize in <strong className="text-foreground">private guided tours</strong>, <strong className="text-foreground">wildlife safaris at Yala National Park</strong>, 
               <strong className="text-foreground"></strong>, and scenic journeys through <strong className="text-foreground">Ella's tea plantations</strong>.
             </p>
