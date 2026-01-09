@@ -81,7 +81,12 @@ const Hero = () => {
     glow: 'bg-violet-400'
   }];
   const currentTheme = colorThemes[currentSlide % colorThemes.length];
-  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-label="Hero slideshow showcasing Sri Lanka destinations">
+  // Hardcoded SEO-friendly fallback content
+  const seoTitle = "Best Sri Lanka Tours & Private Driver 2025";
+  const seoSubtitle = "The Pearl of the Indian Ocean";
+  const seoDescription = "Experience ancient temples, pristine beaches, Yala safari, Sigiriya Rock & Ella tea plantations with Ceylon Tour Rides";
+
+  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-label="Ceylon Tour Rides - Best Sri Lanka Tours, Private Driver, Safari & Cultural Experiences 2025">
       {/* Background Images - Only render current and adjacent slides for performance */}
       {images.map((image, index) => {
       // Only render current, previous, and next slides
@@ -132,23 +137,25 @@ const Hero = () => {
         <div className="overflow-hidden mb-6">
           <h1 className={`text-5xl md:text-7xl lg:text-8xl font-bold text-primary-foreground leading-tight transition-all duration-400 ${isTransitioning ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
             {loading ? <span className="animate-shimmer inline-block w-96 h-20 bg-muted rounded" /> : <>
-                {currentTitle.split(' ')[0]}{' '}
+                {(currentTitle || seoTitle).split(' ')[0]}{' '}
                 <span className="bg-white/0 text-secondary-foreground text-center">
-                  {currentTitle.split(' ').slice(1).join(' ')}
+                  {(currentTitle || seoTitle).split(' ').slice(1).join(' ')}
                 </span>
               </>}
           </h1>
+          {/* SEO hidden content for search engines */}
+          <span className="sr-only">Ceylon Tour Rides offers the best Sri Lanka tours including Yala safari, Sigiriya tours, Kandy Temple visits, Ella train journey, and private driver services for tourists in 2025</span>
         </div>
 
         <div className="overflow-hidden">
           <p className={`text-xl md:text-2xl text-primary-foreground/90 mb-4 font-light transition-all duration-400 delay-75 ${isTransitioning ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-            {currentSubtitle}
+            {currentSubtitle || seoSubtitle}
           </p>
         </div>
 
         <div className="overflow-hidden">
           <p className={`text-lg text-primary-foreground/70 mb-12 max-w-2xl mx-auto transition-all duration-400 delay-100 ${isTransitioning ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-            {currentDescription}
+            {currentDescription || seoDescription}
           </p>
         </div>
 

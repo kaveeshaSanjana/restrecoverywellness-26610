@@ -36,31 +36,97 @@ const Index = () => {
       <Navbar />
       <Hero />
       
-      {/* SEO Content Section */}
-      <section className="bg-muted/30 py-16">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <article className="prose prose-lg max-w-none">
-            <h2 className="text-3xl font-bold text-foreground mb-6 text-center">
-              Discover Sri Lanka with Ceylon Tour Rides
+      {/* SEO Content Section - Discover Sri Lanka */}
+      <section className="relative py-24 overflow-hidden">
+        {/* Beautiful gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/10 to-accent/5" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/15 rounded-full blur-[100px]" />
+        
+        <div className="container relative mx-auto px-4 max-w-6xl">
+          <article className="text-center">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-sm font-medium text-primary">Trusted by 5000+ Travelers</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+              Discover <span className="text-primary">Sri Lanka</span> with
+              <br />
+              <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">Ceylon Tour Rides</span>
             </h2>
-            <p className="text-muted-foreground text-center mb-8 text-lg leading-relaxed">
-              Welcome to <strong>Ceylon Tour Rides</strong>, your trusted partner for unforgettable <strong>Sri Lanka tours</strong>. 
-              We specialize in <strong>private guided tours</strong>, <strong>wildlife safaris at Yala National Park</strong>, 
-              <strong>cultural heritage visits to Sigiriya and Kandy</strong>, and scenic journeys through <strong>Ella's tea plantations</strong>. 
-              Our experienced local drivers and guides ensure safe, comfortable, and authentic travel experiences across the Pearl of the Indian Ocean.
+            
+            <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto mb-16 leading-relaxed">
+              Welcome to <strong className="text-foreground">Ceylon Tour Rides</strong>, your trusted partner for unforgettable <strong className="text-foreground">Sri Lanka tours</strong>. 
+              We specialize in <strong className="text-foreground">private guided tours</strong>, <strong className="text-foreground">wildlife safaris at Yala National Park</strong>, 
+              <strong className="text-foreground">cultural heritage visits to Sigiriya and Kandy</strong>, and scenic journeys through <strong className="text-foreground">Ella's tea plantations</strong>.
             </p>
-            <div className="grid md:grid-cols-3 gap-6 text-center">
-              <div className="p-4">
-                <h3 className="font-semibold text-foreground mb-2">🏛️ Cultural Tours</h3>
-                <p className="text-sm text-muted-foreground">Sigiriya Rock Fortress, Temple of the Tooth Kandy, Dambulla Cave Temple, ancient cities of Polonnaruwa & Anuradhapura</p>
+            
+            {/* Feature Cards */}
+            <div className="grid md:grid-cols-3 gap-8">
+              {/* Cultural Tours */}
+              <div className="group relative p-8 rounded-3xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2">
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative">
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-3xl shadow-lg shadow-amber-500/30">
+                    🏛️
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Cultural Heritage Tours</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Explore <strong>Sigiriya Rock Fortress</strong>, <strong>Temple of the Tooth Kandy</strong>, <strong>Dambulla Cave Temple</strong>, and ancient cities of <strong>Polonnaruwa & Anuradhapura</strong>
+                  </p>
+                </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-foreground mb-2">🦁 Safari Adventures</h3>
-                <p className="text-sm text-muted-foreground">Yala National Park leopard safari, Udawalawe elephants, Minneriya elephant gathering, Wilpattu wildlife tours</p>
+              
+              {/* Safari Adventures */}
+              <div className="group relative p-8 rounded-3xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-secondary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-secondary/10 hover:-translate-y-2">
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative">
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-3xl shadow-lg shadow-emerald-500/30">
+                    🦁
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Safari Adventures</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Experience <strong>Yala National Park leopard safari</strong>, <strong>Udawalawe elephants</strong>, <strong>Minneriya elephant gathering</strong>, and <strong>Wilpattu wildlife tours</strong>
+                  </p>
+                </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-foreground mb-2">🏖️ Beach & Nature</h3>
-                <p className="text-sm text-muted-foreground">Mirissa whale watching, Galle Fort, Unawatuna beach, Bentota water sports, Arugam Bay surfing</p>
+              
+              {/* Beach & Nature */}
+              <div className="group relative p-8 rounded-3xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-accent/30 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-2">
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative">
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-3xl shadow-lg shadow-cyan-500/30">
+                    🏖️
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Beach & Nature</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Discover <strong>Mirissa whale watching</strong>, <strong>Galle Fort</strong>, <strong>Unawatuna beach</strong>, <strong>Bentota water sports</strong>, and <strong>Arugam Bay surfing</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Trust Stats */}
+            <div className="mt-16 pt-16 border-t border-border/50">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div className="text-center">
+                  <div className="text-4xl md:text-5xl font-bold text-primary mb-2">10+</div>
+                  <div className="text-sm text-muted-foreground">Years Experience</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">5000+</div>
+                  <div className="text-sm text-muted-foreground">Happy Travelers</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl md:text-5xl font-bold text-primary mb-2">50+</div>
+                  <div className="text-sm text-muted-foreground">Destinations</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">4.9★</div>
+                  <div className="text-sm text-muted-foreground">Rating</div>
+                </div>
               </div>
             </div>
           </article>
