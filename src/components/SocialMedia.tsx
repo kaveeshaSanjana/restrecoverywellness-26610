@@ -45,8 +45,17 @@ const SocialMedia = () => {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-muted/50">
-      <div className="container mx-auto px-4 max-w-5xl">
+    <section className="py-24 md:py-32 relative overflow-hidden">
+      {/* Background Image with Blur */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80)',
+        }}
+      />
+      <div className="absolute inset-0 backdrop-blur-sm bg-background/70" />
+      
+      <div className="container mx-auto px-4 max-w-5xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
